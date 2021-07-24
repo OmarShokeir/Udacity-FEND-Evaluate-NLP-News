@@ -11,11 +11,11 @@ function handleSubmit(event) {
     .then(function (data) {
         console.log(data);
         postData('/add', { 
-            score_tag: data.main.score_tag,
-            agreement: data.main.agreement,
-            subjectivity: data.main.subjectivity,
-            confidence: data.main.confidence,
-            irony: data.main.irony
+            score_tag: data.score_tag,
+            agreement: data.agreement,
+            subjectivity: data.subjectivity,
+            confidence: data.confidence,
+            irony: data.irony
         });
         updateUI();
     })
