@@ -10,6 +10,12 @@ app.use(express.static('dist'))
 
 console.log(__dirname)
 
+
+var textapi = ({
+    application_key: process.env.API_KEY
+  });
+  
+
 app.get('/', function (req, res) {
     // res.sendFile('dist/index.html')
     res.sendFile(path.resolve('src/client/views/index.html'))
@@ -26,6 +32,11 @@ app.get('/test', function (req, res) {
 
 // Setup empty JS object to act as endpoint for all routes
 projectData = {};
+
+// GET route for the API key
+app.get('/key',function(req,res){
+    res.send(textapi.application_key)
+})
 
 // Adding the  GET route
 app.get('/all', function (req, res) {

@@ -1,8 +1,6 @@
 function handleSubmit(event) {
     let baseURL = 'https://api.meaningcloud.com/sentiment-2.1?key='
-    let key = process.env.API_KEY + '&url='
     let lang = '&lang=en'
-
     event.preventDefault()
 
     let formText = document.getElementById('name').value
@@ -11,18 +9,21 @@ function handleSubmit(event) {
         alert("Sorry, invalid URL");
     }
     else {
-        getData(baseURL, key, lang, formText)
-            .then(function (data) {
-                console.log(data);
-                postData('/add', {
-                    score_tag: data.score_tag,
-                    agreement: data.agreement,
-                    subjectivity: data.subjectivity,
-                    confidence: data.confidence,
-                    irony: data.irony
-                });
-                updateUI();
-            })
+        getKey()
+            .then(getData(baseURL, key, lang, formText)
+                .then(function (data) {
+                    console.log(data);
+                    postData('/add', {
+                        score_tag: data.score_tag,
+                        agreement: data.agreement,
+                        subjectivity: data.subjectivity,
+                        confidence: data.confidence,
+                        irony: data.irony
+                    });
+                    updateUI();
+                })
+            )
+
     }
 
 
@@ -33,6 +34,18 @@ function handleSubmit(event) {
     // .then(function(res) {
     //     document.getElementById('results').innerHTML = res.message
     // })
+}
+
+// Async function to get the API key from the server
+const getKey = async () => {
+    const request = await fetch('/key');
+    try {
+        const key = await request.json();
+        return key
+    }
+    catch (error) {
+        console.log("Error: ", error);
+    }
 }
 
 // Async function to get the data from the API
