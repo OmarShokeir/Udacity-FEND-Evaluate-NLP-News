@@ -1,4 +1,4 @@
-# Project Instructions
+# About The Project
 
 This project is a part of the Udacity FEND course.
 
