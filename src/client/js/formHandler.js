@@ -6,7 +6,7 @@ function handleSubmit(event) {
     event.preventDefault()
 
     let formText = document.getElementById('name').value
-    Client.checkForName(formText)
+    // Client.checkForName(formText)
     getData(baseURL, key, lang, formText)
     .then(function (data) {
         console.log(data);
@@ -20,13 +20,13 @@ function handleSubmit(event) {
         updateUI();
     })
 
-    // check what text was put into the form field
-    console.log("::: Form Submitted :::")
-    fetch('http://localhost:8080/test')
-    .then(res => res.json())
-    .then(function(res) {
-        document.getElementById('results').innerHTML = res.message
-    })
+    // // check what text was put into the form field
+    // console.log("::: Form Submitted :::")
+    // fetch('http://localhost:8080/test')
+    // .then(res => res.json())
+    // .then(function(res) {
+    //     document.getElementById('results').innerHTML = res.message
+    // })
 }
 
 // Async function to get the data from the API
