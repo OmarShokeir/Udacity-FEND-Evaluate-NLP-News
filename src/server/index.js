@@ -11,7 +11,6 @@ app.use(express.static('dist'))
 console.log(__dirname)
 
 
-const key = process.env.API_KEY;
 let baseURL = 'https://api.meaningcloud.com/sentiment-2.1?key='
 let lang = '&lang=en&url='
   
@@ -33,6 +32,7 @@ app.get('/test', function (req, res) {
 // Adding the POST route
 
 app.post('/add', async (req, res) => {
+    const key = process.env.API_KEY;
     const result = await fetch(baseURL + key + lang + req.body)
     try {
         const data = await result.json();
