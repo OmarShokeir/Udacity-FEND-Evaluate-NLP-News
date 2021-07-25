@@ -1,3 +1,4 @@
+
 async function handleSubmit(event) {
     event.preventDefault()
 
@@ -7,7 +8,7 @@ async function handleSubmit(event) {
         alert("Sorry, invalid URL");
     }
     else {
-        await fetch('/add', {
+        await fetch('http://localhost:8080/add', {
             method: 'POST',
             credentials: 'same-origin',
             headers: {
@@ -20,7 +21,7 @@ async function handleSubmit(event) {
             document.getElementById('resText').innerHTML = "Text: " + formText;
             document.getElementById('resScore').innerHTML = "Score: " + res.score_tag;
             document.getElementById('resSubjectivity').innerHTML = "Subjectivity: : " + res.subjectivity;
-            document.getElementById('resIrony').innerHTML = "Text: " + res.irony;
+            document.getElementById('resIrony').innerHTML = "Irony: " + res.irony;
         }
         )
     }

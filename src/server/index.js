@@ -3,6 +3,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 const express = require('express')
 const mockAPIResponse = require('./mockAPI.js')
+const fetch = require("node-fetch");
 
 const app = express()
 
@@ -34,6 +35,7 @@ app.get('/test', function (req, res) {
 app.post('/add', async (req, res) => {
     const key = process.env.API_KEY;
     const result = await fetch(baseURL + key + lang + req.body)
+    console.log(baseURL + key + lang + req.body)
     try {
         const data = await result.json();
         console.log(data);
