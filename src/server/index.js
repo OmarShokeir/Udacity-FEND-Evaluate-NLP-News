@@ -11,9 +11,9 @@ app.use(express.static('dist'))
 console.log(__dirname)
 
 
-var textapi = ({
-    application_key: process.env.API_KEY
-  });
+const key = process.env.API_KEY;
+let baseURL = 'https://api.meaningcloud.com/sentiment-2.1?key='
+let lang = '&lang=en&url='
   
 
 app.get('/', function (req, res) {
@@ -30,27 +30,15 @@ app.get('/test', function (req, res) {
     res.send(mockAPIResponse)
 })
 
-// Setup empty JS object to act as endpoint for all routes
-projectData = {};
-
-// GET route for the API key
-app.get('/key',function(req,res){
-    res.send(textapi.application_key)
-})
-
-// Adding the  GET route
-app.get('/all', function (req, res) {
-    res.send(projectData);
-})
 // Adding the POST route
-app.post('/add', function (req, res) {
-    dataEntry = {
-        score_tag: req.body.score_tag,
-        agreement: req.body.agreement,
-        subjectivity: req.body.subjectivity,
-        confidence: req.body.confidence,
-        irony: req.body.irony
+
+app.post('/add', async (req, res) => {
+    const result = await fetch(baseURL + key + lang + req.body)
+    try {
+        const data = await result.json();
+        console.log(data);
+        res.send(data);
+    } catch (error) {
+        console.log("Error: ", error);
     }
-    projectData = dataEntry;
-    res.send(projectData);
 })

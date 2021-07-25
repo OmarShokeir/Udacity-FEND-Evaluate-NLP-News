@@ -1,6 +1,4 @@
-function handleSubmit(event) {
-    let baseURL = 'https://api.meaningcloud.com/sentiment-2.1?key='
-    let lang = '&lang=en'
+async function handleSubmit(event) {
     event.preventDefault()
 
     let formText = document.getElementById('name').value
@@ -9,88 +7,30 @@ function handleSubmit(event) {
         alert("Sorry, invalid URL");
     }
     else {
-        getKey()
-            .then(getData(baseURL, key, lang, formText)
-                .then(function (data) {
-                    console.log(data);
-                    postData('/add', {
-                        score_tag: data.score_tag,
-                        agreement: data.agreement,
-                        subjectivity: data.subjectivity,
-                        confidence: data.confidence,
-                        irony: data.irony
-                    });
-                    updateUI();
-                })
-            )
-
-    }
-
-
-    // // check what text was put into the form field
-    // console.log("::: Form Submitted :::")
-    // fetch('http://localhost:8080/test')
-    // .then(res => res.json())
-    // .then(function(res) {
-    //     document.getElementById('results').innerHTML = res.message
-    // })
-}
-
-// Async function to get the API key from the server
-const getKey = async () => {
-    const request = await fetch('/key');
-    try {
-        const key = await request.json();
-        return key
-    }
-    catch (error) {
-        console.log("Error: ", error);
+        await fetch('/add', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            // Body data type must match "Content-Type" header        
+            body: JSON.stringify(data),
+        })
+        .then( res => {
+            document.getElementById('resText').innerHTML = "Text: " + formText;
+            document.getElementById('resScore').innerHTML = "Score: " + res.score_tag;
+            document.getElementById('resSubjectivity').innerHTML = "Subjectivity: : " + res.subjectivity;
+            document.getElementById('resIrony').innerHTML = "Text: " + res.irony;
+        }
+        )
     }
 }
 
-// Async function to get the data from the API
-const getData = async (baseURL, key, lang, formText) => {
-    const res = await fetch(baseURL + key + formText + lang)
-    try {
-        const data = await res.json();
-        console.log(data);
-        return data;
-    } catch (error) {
-        console.log("Error: ", error);
-    }
-}
 
-// POST data
-const postData = async (url = '', data = {}) => {
-    console.log(data);
-    const response = await fetch(url, {
-        method: 'POST',
-        credentials: 'same-origin',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        // Body data type must match "Content-Type" header        
-        body: JSON.stringify(data),
-    });
 
-    try {
-        const newData = await response.json();
-        console.log(newData);
-        return newData;
-    } catch (error) {
-        console.log("Error:", error);
-    }
-}
 
-const updateUI = async () => {
-    const request = await fetch('/all');
-    try {
-        const allData = await request.json();
-        document.getElementById('results').innerHTML = allData.irony
-    }
-    catch (error) {
-        console.log("Error: ", error);
-    }
-}
+
+
+
 
 export { handleSubmit }
