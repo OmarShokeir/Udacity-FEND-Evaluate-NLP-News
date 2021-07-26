@@ -4,10 +4,15 @@ dotenv.config();
 const express = require('express')
 const mockAPIResponse = require('./mockAPI.js')
 const fetch = require("node-fetch");
+const cors = require('cors');
+const bodyParser = require('body-parser');
 
 const app = express()
 
 app.use(express.static('dist'))
+app.use(cors())
+app.use(bodyParser.json());
+app.use(cors())
 
 console.log(__dirname)
 
@@ -34,7 +39,7 @@ app.get('/test', function (req, res) {
 
 app.post('/add', async (req, res) => {
     const key = process.env.API_KEY;
-    const result = await fetch(baseURL + key + lang + req.body)
+    const result = await fetch(baseURL + key + lang + req.body.formText)
     console.log(baseURL + key + lang + req.body)
     try {
         const data = await result.json();

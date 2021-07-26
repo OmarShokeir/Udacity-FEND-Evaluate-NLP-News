@@ -15,7 +15,10 @@ async function handleSubmit(event) {
                 'Content-Type': 'application/json',
             },
             // Body data type must match "Content-Type" header        
-            body: JSON.stringify(formText),
+            body: JSON.stringify({formText}),
+        })
+        .then(res => {
+            return res.json()
         })
         .then( res => {
             document.getElementById('resText').innerHTML = "Text: " + formText;
